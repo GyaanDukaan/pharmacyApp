@@ -1,6 +1,7 @@
 package com.pharma.pharma;
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,10 +16,10 @@ import org.springframework.web.client.RestTemplate;
 
 
 @RestController
+@RequestMapping(value ="/api")
 public class LoginService {
 
-	@Autowired
-	RestTemplate restTemplate;
+	
 	@Autowired 
 	UserDaoImpl userDaoImpl;
 	
@@ -34,6 +35,25 @@ public class LoginService {
 	    }
 		}
 		return "User does not exist";
+   }
+	
+	@PostMapping(value = "/SignUp")
+	public String createUser(@RequestParam String phoneNumber,@RequestParam String passwd)
+	{
+		Optional<User> user = userDaoImpl.getUser(phoneNumber);
+		
+		User newUser = new User();
+		if(user.isPresent() == true)
+		{		
+	    if(user.get().getPasswd().equals(passwd))
+	    {
+	    	return "User already exist";
+	    }
+		}
+		newUser.setPhoneNumber(phoneNumber);
+		newUser.setPasswd(passwd);
+		userDaoImpl.createUser(newUser);
+		return "Successfully Updated";
    }
 	
 	
