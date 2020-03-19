@@ -1,30 +1,18 @@
 package com.pharma.pharma;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-
-@RestController
+@Service
 @RequestMapping(value ="/api")
 public class LoginService {
-
-	
 	@Autowired 
 	UserDaoImpl userDaoImpl;
 	
-	@RequestMapping(value = "/home",method = RequestMethod.GET)
-	public String Authorize(@RequestParam String phoneNumber,@RequestParam String passwd,@RequestParam String cityName)
+	public String Authorize(String phoneNumber,String passwd,String cityName)
 	{
 		Optional<User> user = userDaoImpl.getUser(phoneNumber);
 		if(user.isPresent() == true)
@@ -37,8 +25,7 @@ public class LoginService {
 		return "User does not exist";
    }
 	
-	@PostMapping(value = "/SignUp")
-	public String createUser(@RequestParam String phoneNumber,@RequestParam String passwd)
+	public String createUser(String phoneNumber,String passwd)
 	{
 		Optional<User> user = userDaoImpl.getUser(phoneNumber);
 		
@@ -55,7 +42,6 @@ public class LoginService {
 		userDaoImpl.createUser(newUser);
 		return "Successfully Updated";
    }
-	
-	
+
 	
 }
