@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -93,4 +94,7 @@ public class Product {
 		return "Product [id=" + id + ", title=" + title + "]";
 	}
 	
+	
+	@OneToOne(mappedBy = "prod", cascade = CascadeType.ALL)
+    private Inventory inventory;
 }
